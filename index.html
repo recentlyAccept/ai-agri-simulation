@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI数智农业虚拟仿真 · 竞赛要点速览（金砖职业技能大赛）</title>
+<style>
+  :root{
+    --green-900:#0b3d2e;
+    --green-700:#14532d;
+    --green-600:#166534;
+    --green-500:#22a05e;
+    --green-400:#4ade80;
+    --green-100:#dcfce7;
+    --green-50:#f0fdf4;
+    --blue-900:#0c1f3f;
+    --blue-700:#123a72;
+    --blue-600:#1d5fbf;
+    --blue-500:#2f7fe8;
+    --blue-100:#dbeafe;
+    --blue-50:#eff6ff;
+    --gold:#f5b301;
+    --gold-dark:#c98a00;
+    --red:#e5533d;
+    --ink:#16241d;
+    --ink-2:#3f5147;
+    --ink-3:#6b7f73;
+    --line:#e3ece6;
+    --bg:#f6faf7;
+    --card:#ffffff;
+    --shadow:0 10px 30px rgba(11,61,46,.08);
+    --shadow-lg:0 24px 60px rgba(11,61,46,.14);
+    --radius:18px;
+    --radius-sm:12px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,-apple-system,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.7;font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(34,160,94,.25)}
+
+  /* ---------- Top Nav ---------- */
+  nav.top{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    transition:box-shadow .3s;
+  }
+  nav.top.scrolled{box-shadow:0 6px 24px rgba(11,61,46,.10)}
+  .nav-inner{
+    max-width:1200px;margin:0 auto;padding:0 24px;height:64px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800;font-size:17px}
+  .brand .logo{
+    width:38px;height:38px;border-radius:11px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--green-600),var(--blue-600));
+    display:grid;place-items:center;color:#fff;font-size:20px;
+    box-shadow:0 4px 12px rgba(29,95,191,.35);
+  }
+  .brand small{display:block;font-size:11px;font-weight:500;color:var(--ink-3);line-height:1.2}
+  .nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+  .nav-links a{
+    display:block;padding:8px 13px;border-radius:9px;color:var(--ink-2);
+    text-decoration:none;font-size:14px;font-weight:600;transition:.2s;
+  }
+  .nav-links a:hover{background:var(--green-50);color:var(--green-600)}
+  .nav-cta{
+    background:linear-gradient(135deg,var(--green-500),var(--blue-600));
+    color:#fff!important;padding:8px 16px!important;border-radius:99px;
+    box-shadow:0 4px 14px rgba(34,160,94,.35);white-space:nowrap;
+  }
+  .nav-cta:hover{transform:translateY(-1px)}
+  .hamburger{display:none;background:none;border:0;cursor:pointer;width:42px;height:42px;border-radius:10px}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--ink);margin:5px auto;border-radius:2px;transition:.3s}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;overflow:hidden;color:#fff;
+    background:
+      radial-gradient(900px 500px at 85% -10%,rgba(47,127,232,.55),transparent 60%),
+      radial-gradient(800px 500px at -10% 110%,rgba(74,222,128,.35),transparent 60%),
+      linear-gradient(150deg,#0c3d2c 0%,#0e4d35 45%,#0b3f4a 100%);
+    padding:150px 0 110px;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:auto 0 0 0;height:90px;pointer-events:none;
+    background:linear-gradient(transparent,var(--bg));
+  }
+  .hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 24px}
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:99px;padding:8px 16px;
+    font-size:13px;font-weight:600;letter-spacing:.4px;margin-bottom:22px;
+  }
+  .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(245,179,1,.25);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(245,179,1,.25)}50%{box-shadow:0 0 0 8px rgba(245,179,1,.08)}}
+  h1.hero-title{font-size:clamp(32px,5vw,56px);line-height:1.18;font-weight:900;letter-spacing:.5px;max-width:900px}
+  h1.hero-title .grad{
+    background:linear-gradient(90deg,var(--green-400),#7ce7ff,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-sub{margin-top:20px;font-size:clamp(15px,1.6vw,18px);color:rgba(255,255,255,.86);max-width:780px}
+  .hero-stats{
+    margin-top:42px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:960px;
+  }
+  .hstat{
+    background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);
+    border-radius:16px;padding:18px 16px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    transition:transform .25s,background .25s;
+  }
+  .hstat:hover{transform:translateY(-4px);background:rgba(255,255,255,.15)}
+  .hstat .num{font-size:clamp(24px,2.6vw,34px);font-weight:900;color:#fff;line-height:1.1}
+  .hstat .num em{font-style:normal;font-size:.55em;font-weight:700;color:var(--gold)}
+  .hstat .lbl{font-size:13px;color:rgba(255,255,255,.78);margin-top:4px}
+  .hero-actions{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+    border-radius:99px;padding:13px 26px;font-weight:700;font-size:15px;transition:.25s;border:0;cursor:pointer;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--green-400),var(--blue-500));color:#06301f;box-shadow:0 8px 24px rgba(47,127,232,.4)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(47,127,232,.5)}
+  .btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3)}
+  .btn-ghost:hover{background:rgba(255,255,255,.2);transform:translateY(-2px)}
+
+  /* ---------- Layout ---------- */
+  .container{max-width:1200px;margin:0 auto;padding:0 24px}
+  section.block{padding:84px 0 20px}
+  .sec-head{margin-bottom:44px;text-align:center}
+  .sec-tag{
+    display:inline-block;background:var(--green-100);color:var(--green-700);
+    border-radius:99px;padding:5px 14px;font-size:12.5px;font-weight:700;letter-spacing:1px;margin-bottom:14px;
+  }
+  .sec-tag.blue{background:var(--blue-100);color:var(--blue-700)}
+  .sec-tag.gold{background:#fef3c7;color:var(--gold-dark)}
+  h2.sec-title{font-size:clamp(26px,3.4vw,38px);font-weight:900;letter-spacing:.3px;color:var(--green-900)}
+  .sec-desc{margin-top:12px;color:var(--ink-3);max-width:760px;margin-left:auto;margin-right:auto;font-size:15.5px}
+
+  /* ---------- Cards ---------- */
+  .grid{display:grid;gap:20px}
+  .g-2{grid-template-columns:repeat(2,1fr)}
+  .g-3{grid-template-columns:repeat(3,1fr)}
+  .g-4{grid-template-columns:repeat(4,1fr)}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;box-shadow:var(--shadow);transition:transform .28s,box-shadow .28s;position:relative;overflow:hidden;
+  }
+  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+  .card .ic{
+    width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:24px;margin-bottom:16px;
+    background:linear-gradient(135deg,var(--green-100),var(--blue-100));
+  }
+  .card h3{font-size:18px;font-weight:800;color:var(--green-900);margin-bottom:8px}
+  .card p{color:var(--ink-2);font-size:14.5px}
+  .card ul{list-style:none;margin-top:12px;display:grid;gap:8px}
+  .card li{font-size:14px;color:var(--ink-2);padding-left:24px;position:relative}
+  .card li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green-500);font-weight:900}
+
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{background:var(--green-50);border:1px solid var(--green-100);color:var(--green-700);border-radius:99px;padding:5px 12px;font-size:12.5px;font-weight:600}
+  .chip.blue{background:var(--blue-50);border-color:var(--blue-100);color:var(--blue-700)}
+  .chip.gold{background:#fffbeb;border-color:#fde68a;color:var(--gold-dark)}
+  .chip.red{background:#fef2f2;border-color:#fecaca;color:var(--red)}
+
+  .big-num{font-size:34px;font-weight:900;background:linear-gradient(135deg,var(--green-600),var(--blue-600));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ---------- Closed loop diagram ---------- */
+  .loop{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:26px;align-items:stretch;
+  }
+  .loop .node{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 10px;text-align:center;
+    box-shadow:var(--shadow);position:relative;
+  }
+  .loop .node .n{font-size:22px;display:block;margin-bottom:6px}
+  .loop .node b{font-size:13.5px;color:var(--green-900);display:block;line-height:1.35}
+  .loop .node small{font-size:11px;color:var(--ink-3)}
+  .loop .arrow{
+    align-self:center;text-align:center;color:var(--green-500);font-size:20px;font-weight:900;
+  }
+  .layers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
+  .layer{
+    border-radius:14px;padding:18px;color:#fff;position:relative;overflow:hidden;
+  }
+  .layer .ln{font-size:13px;font-weight:800;letter-spacing:2px;opacity:.85}
+  .layer h4{font-size:18px;font-weight:800;margin-top:4px}
+  .layer p{font-size:12.5px;opacity:.9;margin-top:6px}
+  .layer.l1{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .layer.l2{background:linear-gradient(135deg,#1d5fbf,#3b82f6)}
+  .layer.l3{background:linear-gradient(135deg,#7c3aed,#8b5cf6)}
+  .layer.l4{background:linear-gradient(135deg,#b45309,#f59e0b)}
+
+  /* ---------- Score bars ---------- */
+  .score-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow)}
+  .score-row{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px dashed var(--line)}
+  .score-row:last-child{border-bottom:0}
+  .score-name{width:215px;flex:0 0 auto;font-size:14.5px;font-weight:700;color:var(--ink)}
+  .score-name small{display:block;font-weight:500;color:var(--ink-3);font-size:12px}
+  .bar-wrap{flex:1;height:16px;background:var(--green-50);border-radius:99px;overflow:hidden}
+  .bar{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--green-400),var(--blue-500));transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+  .bar.gold{background:linear-gradient(90deg,#fbbf24,var(--gold-dark))}
+  .score-val{width:86px;flex:0 0 auto;text-align:right;font-weight:900;font-size:16px;color:var(--green-700)}
+  .score-total{
+    margin-top:20px;display:flex;justify-content:space-between;align-items:center;
+    background:linear-gradient(135deg,var(--green-700),var(--blue-700));color:#fff;
+    border-radius:14px;padding:18px 22px;
+  }
+  .score-total .t1{font-size:13px;opacity:.85}
+  .score-total .t2{font-size:24px;font-weight:900}
+  .note{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:14px;padding:14px 18px;font-size:13.5px;color:var(--blue-900);margin-top:16px}
+  .note b{color:var(--blue-700)}
+
+  /* ---------- Detail module ---------- */
+  .module{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:28px;margin-bottom:22px;transition:transform .28s,box-shadow .28s;
+  }
+  .module:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .module-head{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:18px}
+  .module-head .mh-left{display:flex;align-items:center;gap:14px}
+  .module-head .idx{
+    width:46px;height:46px;border-radius:13px;flex:0 0 auto;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--green-600),var(--blue-600));color:#fff;font-size:20px;font-weight:900;
+  }
+  .module-head h3{font-size:19px;font-weight:800;color:var(--green-900)}
+  .module-head .sub{font-size:13px;color:var(--ink-3)}
+  .score-pill{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;border-radius:99px;padding:6px 16px;font-weight:800;font-size:14px;white-space:nowrap}
+  .sub-block{margin-bottom:14px;padding:14px 16px;border-radius:12px;background:var(--green-50);border:1px solid var(--green-100)}
+  .sub-block.blue{background:var(--blue-50);border-color:var(--blue-100)}
+  .sub-block h4{font-size:14.5px;font-weight:800;color:var(--green-800);margin-bottom:6px}
+  .sub-block.blue h4{color:var(--blue-800)}
+  .sub-block p{font-size:13.5px;color:var(--ink-2)}
+  .kv{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px}
+  .kv span{font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px 10px;color:var(--ink-2)}
+
+  /* ---------- Pipeline ---------- */
+  .pipe{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin-top:18px}
+  .pipe .step{
+    flex:1;min-width:130px;background:var(--card);border:1px solid var(--line);border-radius:13px;
+    padding:14px 12px;text-align:center;box-shadow:var(--shadow);position:relative;
+  }
+  .pipe .step .n{font-size:22px}
+  .pipe .step b{display:block;font-size:13.5px;color:var(--green-900);margin-top:4px}
+  .pipe .step small{font-size:11.5px;color:var(--ink-3)}
+  .pipe .sep{align-self:center;color:var(--green-400);font-weight:900}
+
+  /* ---------- Timeline ---------- */
+  .timeline{position:relative;margin-top:10px;padding-left:34px}
+  .timeline::before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:3px;border-radius:3px;background:linear-gradient(var(--green-400),var(--blue-500))}
+  .tl-item{position:relative;margin-bottom:26px}
+  .tl-item::before{
+    content:"";position:absolute;left:-30px;top:6px;width:15px;height:15px;border-radius:50%;
+    background:#fff;border:4px solid var(--green-500);box-shadow:0 0 0 4px rgba(34,160,94,.15);
+  }
+  .tl-item.gold::before{border-color:var(--gold)}
+  .tl-item.blue::before{border-color:var(--blue-500)}
+  .tl-date{font-size:13px;font-weight:800;color:var(--blue-600);letter-spacing:.4px}
+  .tl-date.gold{color:var(--gold-dark)}
+  .tl-title{font-size:17px;font-weight:800;color:var(--green-900);margin-top:2px}
+  .tl-desc{font-size:14px;color:var(--ink-2);margin-top:4px}
+  .tl-desc ul{list-style:none;margin-top:6px;display:grid;gap:4px}
+  .tl-desc li{padding-left:20px;position:relative;font-size:13.5px}
+  .tl-desc li::before{content:"·";position:absolute;left:4px;color:var(--green-500);font-weight:900;font-size:18px;top:-2px}
+
+  /* ---------- Medals ---------- */
+  .medal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+  .medal{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 18px;text-align:center;box-shadow:var(--shadow);transition:transform .25s}
+  .medal:hover{transform:translateY(-5px)}
+  .medal .mi{font-size:40px}
+  .medal h4{font-size:16.5px;font-weight:800;margin-top:8px}
+  .medal .gold-c{color:var(--gold-dark)}
+  .medal .silver-c{color:#64748b}
+  .medal .bronze-c{color:#b45309}
+  .medal p{font-size:12.5px;color:var(--ink-3);margin-top:6px}
+  .medal .cnt{display:inline-block;margin-top:10px;background:var(--green-50);color:var(--green-700);border-radius:99px;padding:3px 12px;font-size:12px;font-weight:700}
+
+  /* ---------- Platform ---------- */
+  .platform{
+    background:linear-gradient(135deg,#0c3d2c,#0b3f4a);color:#fff;border-radius:22px;
+    padding:40px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+  }
+  .platform::before{content:"";position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;background:rgba(74,222,128,.14)}
+  .platform::after{content:"";position:absolute;right:40px;bottom:-120px;width:280px;height:280px;border-radius:50%;background:rgba(47,127,232,.18)}
+  .platform h3{font-size:24px;font-weight:900;position:relative;z-index:1}
+  .platform .pl-sub{color:rgba(255,255,255,.8);font-size:14.5px;margin-top:6px;position:relative;z-index:1}
+  .plat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px;position:relative;z-index:1}
+  .plat-item{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:18px}
+  .plat-item .pi{font-size:24px}
+  .plat-item b{display:block;font-size:15px;margin-top:8px}
+  .plat-item span{font-size:13px;color:rgba(255,255,255,.82)}
+  .train-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:26px;position:relative;z-index:1}
+  .train-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:20px;display:flex;gap:16px;align-items:center}
+  .train-card .day{font-size:30px;font-weight:900;color:var(--gold)}
+  .train-card .dm{font-size:12px;color:rgba(255,255,255,.7)}
+  .train-card b{display:block;font-size:16px;margin-top:2px}
+  .train-card span{font-size:13px;color:rgba(255,255,255,.82)}
+
+  /* ---------- Gallery ---------- */
+  details.gallery{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  details.gallery summary{
+    cursor:pointer;padding:22px 26px;font-weight:800;font-size:16px;color:var(--green-900);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;
+  }
+  details.gallery summary::-webkit-details-marker{display:none}
+  details.gallery summary .chev{transition:transform .3s;color:var(--green-500)}
+  details.gallery[open] summary .chev{transform:rotate(180deg)}
+  .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:6px 26px 26px}
+  .gallery-grid figure{border-radius:12px;overflow:hidden;border:1px solid var(--line);cursor:zoom-in;transition:.25s}
+  .gallery-grid figure:hover{transform:scale(1.015);box-shadow:var(--shadow)}
+  .gallery-grid img{width:100%;display:block;aspect-ratio:16/10;object-fit:cover}
+  .gallery-grid figcaption{font-size:12.5px;color:var(--ink-3);padding:8px 12px;background:var(--green-50)}
+
+  /* ---------- Lightbox ---------- */
+  #lightbox{
+    position:fixed;inset:0;background:rgba(6,20,14,.92);z-index:300;display:none;
+    align-items:center;justify-content:center;flex-direction:column;padding:30px;cursor:zoom-out;
+  }
+  #lightbox.show{display:flex}
+  #lightbox img{max-width:94%;max-height:84vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  #lightbox .cap{color:#fff;margin-top:14px;font-size:14px}
+
+  /* ---------- Footer ---------- */
+  footer{background:#0a2a1f;color:rgba(255,255,255,.75);margin-top:90px;padding:46px 0 30px}
+  footer .f-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;gap:14px;justify-items:center;text-align:center}
+  footer .f-logo{font-weight:900;font-size:19px;color:#fff}
+  footer p{font-size:13px;max-width:820px}
+  footer .f-note{border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px 18px;font-size:12.5px;color:rgba(255,255,255,.6);max-width:860px;margin-top:6px}
+
+  /* ---------- Back to top ---------- */
+  #toTop{
+    position:fixed;right:26px;bottom:26px;z-index:90;width:48px;height:48px;border-radius:50%;
+    background:linear-gradient(135deg,var(--green-500),var(--blue-600));color:#fff;border:0;cursor:pointer;
+    font-size:20px;box-shadow:0 10px 26px rgba(11,61,46,.35);opacity:0;pointer-events:none;transition:.3s;
+  }
+  #toTop.show{opacity:1;pointer-events:auto}
+  #toTop:hover{transform:translateY(-3px)}
+
+  /* ---------- Reveal ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:960px){
+    .g-4,.medal-grid{grid-template-columns:repeat(2,1fr)}
+    .g-3{grid-template-columns:repeat(2,1fr)}
+    .g-2{grid-template-columns:1fr}
+    .plat-grid{grid-template-columns:1fr}
+    .loop{grid-template-columns:repeat(3,1fr)}
+    .loop .arrow{transform:rotate(90deg)}
+    .layers{grid-template-columns:repeat(2,1fr)}
+    .hero-stats{grid-template-columns:repeat(2,1fr)}
+    .score-name{width:150px}
+  }
+  @media(max-width:720px){
+    nav.top{position:sticky}
+    .nav-links{
+      position:fixed;top:64px;left:0;right:0;background:#fff;flex-direction:column;align-items:stretch;
+      padding:12px 20px 20px;gap:2px;border-bottom:1px solid var(--line);
+      transform:translateY(-130%);transition:transform .35s;box-shadow:var(--shadow);
+    }
+    .nav-links.open{transform:none}
+    .nav-links a{padding:13px 14px}
+    .hamburger{display:block}
+    .hero{padding:110px 0 80px}
+    .g-3,.g-4,.medal-grid,.train-cards{grid-template-columns:1fr}
+    .score-name{width:120px;font-size:13px}
+    .score-val{width:70px}
+    .gallery-grid{grid-template-columns:1fr}
+    .module-head{flex-direction:column}
+    section.block{padding:64px 0 12px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ======== Top Nav ======== -->
+<nav class="top" id="topNav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <span class="logo">🌱</span>
+      <span>AI数智农业虚拟仿真<small>金砖职业技能大赛 · 教学要点速览</small></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#overview">赛事概览</a></li>
+      <li><a href="#scores">竞赛分值</a></li>
+      <li><a href="#points">评分要点</a></li>
+      <li><a href="#prepare">备赛指引</a></li>
+      <li><a href="#org">竞赛组织</a></li>
+      <li><a href="#platform">平台与培训</a></li>
+      <li><a class="nav-cta" href="#gallery">📷 原图资料</a></li>
+    </ul>
+    <button class="hamburger" id="burger" aria-label="菜单"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ======== Hero ======== -->
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <span class="hero-badge"><span class="dot"></span> BRICS Skills Competition · 金砖国家未来技能和技术挑战赛</span>
+    <h1 class="hero-title">AI 数智农业<span class="grad">虚拟仿真</span><br>竞赛要点全解析</h1>
+    <p class="hero-sub">从基础设施部署到生产运行调控，在虚拟仿真平台中完成「环境感知 → 数据传输 → 智能决策 → 执行控制 → 种植管理 → 植保作业」的完整闭环。本页面向参赛学生梳理赛制、分值、评分要点与备赛方法。</p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="num">200<em> 分</em></div><div class="lbl">竞赛总分（8 大模块）</div></div>
+      <div class="hstat"><div class="num">6<em> 小时</em></div><div class="lbl">2 名组员总计时</div></div>
+      <div class="hstat"><div class="num">100<em> 题</em></div><div class="lbl">理论综合能力测试</div></div>
+      <div class="hstat"><div class="num">2<em> 阶段</em></div><div class="lbl">选拔赛 → 国际总决赛</div></div>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#scores">📊 查看竞赛分值</a>
+      <a class="btn btn-ghost" href="#prepare">🎯 备赛指引</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ======== 1. 赛事概览 ======== -->
+  <section class="block" id="overview">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">SECTION 01</span>
+        <h2 class="sec-title">赛事概览</h2>
+        <p class="sec-desc">赛事采用组委会规定的统一技术平台，选手依据给定的「数智农业系统架构图」，在虚拟仿真平台中完成从基础设施部署到生产运行调控的全流程搭建与配置。</p>
+      </div>
+
+      <div class="grid g-3 reveal">
+        <div class="card">
+          <div class="ic">🗺️</div>
+          <h3>竞赛流程</h3>
+          <p>两级赛制：<b>省/区域选拔赛</b> → <b>国际总决赛</b>。选拔赛线上进行，总决赛统一排名、国际表彰。</p>
+        </div>
+        <div class="card">
+          <div class="ic">⏱️</div>
+          <h3>竞赛时长</h3>
+          <p>全程 <b>6 小时</b>（参赛队 2 名组员总计时），选手通过电脑、键盘与鼠标完成全部模块操作。</p>
+        </div>
+        <div class="card">
+          <div class="ic">🧩</div>
+          <h3>竞赛形式</h3>
+          <p>传感器与执行器代码开发、拓扑图连线、设备安装与网络连接、番茄种植模拟、无人机组装与调试、植保作业，并完成 <b>100 道理论知识赛题</b>。</p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:44px">
+        <h3 style="text-align:center;font-size:22px;font-weight:900;color:var(--green-900)">系统四层架构</h3>
+        <p style="text-align:center;color:var(--ink-3);font-size:14.5px;margin-top:6px">竞赛系统应覆盖「感知层 · 网络层 · 平台层 · 应用层」</p>
+        <div class="layers">
+          <div class="layer l1"><div class="ln">感知层</div><h4>环境感知</h4><p>温湿度、土壤、氮磷钾、光照等传感器采集数据</p></div>
+          <div class="layer l2"><div class="ln">网络层</div><h4>数据传输</h4><p>ZigBee 组网、网关、路由器与网络参数配置</p></div>
+          <div class="layer l3"><div class="ln">平台层</div><h4>智能决策</h4><p>云平台数据汇聚、AI 算法辅助环境调控决策</p></div>
+          <div class="layer l4"><div class="ln">应用层</div><h4>执行控制</h4><p>继电器联动执行：天窗、风扇、喷灌、施肥、补光、遮阳</p></div>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:44px">
+        <h3 style="text-align:center;font-size:22px;font-weight:900;color:var(--green-900)">数智农业业务闭环</h3>
+        <div class="loop">
+          <div class="node"><span class="n">🌡️</span><b>环境感知</b><small>传感器采集</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="n">📡</span><b>数据传输</b><small>物联网组网</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="n">🧠</span><b>智能决策</b><small>AI 算法辅助</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="n">⚙️</span><b>执行控制</b><small>继电器联动</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="n">🌿</span><b>种植管理</b><small>生育期调控</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="n">🚁</span><b>植保作业</b><small>无人机飞防</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 2. 竞赛分值 ======== -->
+  <section class="block" id="scores">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag blue">SECTION 02</span>
+        <h2 class="sec-title">竞赛分值 · 8 大模块</h2>
+        <p class="sec-desc">满分 200 分：操作模块 100 分 + 理论综合能力测试 100 分。操作类模块中，「传感器与执行器代码开发」与「番茄种植模拟」分值最高。</p>
+      </div>
+
+      <div class="score-card reveal">
+        <div class="score-row">
+          <div class="score-name">传感器与执行器代码开发<small>模块 1</small></div>
+          <div class="bar-wrap"><div class="bar" data-w="26.5"></div></div>
+          <div class="score-val">26.5 分</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">拓扑图连线<small>模块 2</small></div>
+          <div class="bar-wrap"><div class="bar" data-w="13.5"></div></div>
+          <div class="score-val">13.5 分</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">设备安装与网络连接<small>模块 3</small></div>
+          <div class="bar-wrap"><div class="bar" data-w="10"></div></div>
+          <div class="score-val">10 分</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">番茄种植模拟<small>模块 4</small></div>
+          <div class="bar-wrap"><div class="bar" data-w="25"></div></div>
+          <div class="score-val">25 分</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">无人机组装<small>模块 5</small></div>
+          <div class="bar-wrap"><div class="bar gold" data-w="5"></div></div>
+          <div class="score-val">5 分</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">无人机调试<small>模块 6</small></div>
+          <div class="bar-wrap"><div class="bar gold" data-w="10"></div></div>
+          <div class="score-val">10 分</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">植保作业<small>模块 7</small></div>
+          <div class="bar-wrap"><div class="bar gold" data-w="10"></div></div>
+          <div class="score-val">10 分</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">理论综合能力测试<small>模块 8</small></div>
+          <div class="bar-wrap"><div class="bar" data-w="100"></div></div>
+          <div class="score-val">100 分</div>
+        </div>
+        <div class="score-total">
+          <div><div class="t1">操作模块合计</div><div class="t2">100 分</div></div>
+          <div style="text-align:right"><div class="t1">理论测试</div><div class="t2">100 分</div></div>
+          <div style="text-align:right"><div class="t1">总分</div><div class="t2">200 分</div></div>
+        </div>
+        <div class="note">📌 <b>计分规则（按直播课件原文）：</b>个人成绩 = 选手总分 ÷ 2；参赛队成绩 =（个人成绩₁ + 个人成绩₂）÷ 2（按选手人数）。请以组委会最终公布规则为准。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 3. 评分要点 ======== -->
+  <section class="block" id="points">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">SECTION 03</span>
+        <h2 class="sec-title">模块评分要点设计</h2>
+        <p class="sec-desc">依据官方课件，逐模块拆解「考什么、怎么判分」，帮助学生精准备考。</p>
+      </div>
+
+      <!-- 模块1 -->
+      <div class="module reveal">
+        <div class="module-head">
+          <div class="mh-left">
+            <div class="idx">1</div>
+            <div><h3>传感器与执行器代码开发</h3><div class="sub">核心考核：硬件接线规范性 · CC2530 节点代码配置 · ZigBee 组网与联动控制逻辑</div></div>
+          </div>
+          <div class="score-pill">26.5 分</div>
+        </div>
+        <div class="grid g-3">
+          <div class="sub-block">
+            <h4>① 4 类传感器（合计 9.9 分）</h4>
+            <p>空气温湿度 · 土壤湿度 · 土壤氮磷钾 · 光照强度</p>
+            <div class="kv"><span>接线：电源/接地/信号引脚</span><span>正确加分 · 错误扣分</span></div>
+            <p style="margin-top:8px">代码考核：引脚方向、PANID、频道、波特率、ADC 读取、数据缓存等配置项。</p>
+            <p style="margin-top:8px"><b>🤖 AI 辅助：</b>土壤氮磷钾传感器 RS485 引脚配置引入 AI 辅助判分。</p>
+          </div>
+          <div class="sub-block blue">
+            <h4>② 6 类继电器（合计 12.6 分）</h4>
+            <p>天窗 · 风扇 · 喷灌 · 施肥 · 补光 · 遮阳</p>
+            <div class="kv"><span>评分规则统一</span><span>仅终端 ID 与控制引脚有差异</span></div>
+            <p style="margin-top:8px">接线考核：三线制 <b>VCC / GND / IN</b> 连接正确性。</p>
+            <p style="margin-top:8px">代码考核：终端 ID 匹配、状态控制逻辑、引脚输入输出配置。</p>
+          </div>
+          <div class="sub-block">
+            <h4>③ 协调器（4 分）</h4>
+            <p>无连线考核，重点考核<b>组网基础参数配置</b>。</p>
+            <p style="margin-top:8px">多终端数据接收、按键控制 6 路继电器的综合联动功能，<b>核心功能由 AI 综合评判</b>。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 模块2 -->
+      <div class="module reveal">
+        <div class="module-head">
+          <div class="mh-left">
+            <div class="idx">2</div>
+            <div><h3>拓扑图连线</h3><div class="sub">核心考核：物联网系统层级架构认知与设备组网规范</div></div>
+          </div>
+          <div class="score-pill">13.5 分</div>
+        </div>
+        <div class="grid g-3">
+          <div class="sub-block">
+            <h4>标准拓扑</h4>
+            <p>标准拓扑共 <b>39 条连线</b>，覆盖感知层设备、网关、交换机、路由、防火墙等网络节点。</p>
+          </div>
+          <div class="sub-block blue">
+            <h4>判分规则</h4>
+            <p>「<b>正确得分、错连/多连扣分</b>」逻辑，强调连接的正确性而非数量。</p>
+          </div>
+          <div class="sub-block">
+            <h4>防重复计分</h4>
+            <p>相同端点仅计一次，避免重复连线刷分。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 模块3 -->
+      <div class="module reveal">
+        <div class="module-head">
+          <div class="mh-left">
+            <div class="idx">3</div>
+            <div><h3>设备安装与网络连接</h3><div class="sub">核心考核：大棚与机房的物理部署流程、网络参数配置准确性</div></div>
+          </div>
+          <div class="score-pill">10 分</div>
+        </div>
+        <div class="grid g-3">
+          <div class="sub-block">
+            <h4>① 连接方式选择</h4>
+            <p>4 类网络连接的模式选择正确性：</p>
+            <div class="kv"><span>路由器 — 网关</span><span>PC — 路由器</span><span>防火墙 WAN</span><span>防火墙 LAN — 交换机</span></div>
+          </div>
+          <div class="sub-block blue">
+            <h4>② 网络参数配置</h4>
+            <p>参数匹配度考核：</p>
+            <div class="kv"><span>路由器 IP / 子网掩码 / 网关</span><span>PC 端路由器地址 / WLAN / DHCP 分配范围</span></div>
+          </div>
+          <div class="sub-block">
+            <h4>③ 大棚设备安装</h4>
+            <p>大棚内 <b>11 个透明点位</b>与对应设备的<b>名称匹配安装</b>。</p>
+            <p style="margin-top:8px">⚠️ 基础设备放置类操作仅作流程前置条件，<b>不计入评分</b>，核心考核配置与安装类关键操作。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 模块4 -->
+      <div class="module reveal">
+        <div class="module-head">
+          <div class="mh-left">
+            <div class="idx">4</div>
+            <div><h3>番茄种植模拟</h3><div class="sub">核心考核：设施农业全生育期管控能力 · 生产效益平衡能力</div></div>
+          </div>
+          <div class="score-pill">25 分</div>
+        </div>
+        <div class="grid g-2">
+          <div class="sub-block">
+            <h4>① 分生育期参数调控（15 分）</h4>
+            <p>覆盖<b>育苗期 → 成熟采收期 5 个阶段</b>，每期 3 分。</p>
+            <div class="kv"><span>光照</span><span>温湿度</span><span>CO₂</span><span>土壤温湿度</span><span>pH</span><span>EC 等 20 项参数</span></div>
+            <p style="margin-top:8px">以参数与标准值的<b>偏差范围</b>作判分依据，各阶段<b>定时自动触发评分</b>。</p>
+          </div>
+          <div class="sub-block blue">
+            <h4>② 综合效益得分（10 分）</h4>
+            <p>模拟结束后根据<b>作物健康值、季节系数、设备运行成本</b>计算最终经济收益，按收益比例换算得分，考核长期调控的综合效益平衡能力。</p>
+          </div>
+          <div class="sub-block">
+            <h4>③ 操作规范扣分项</h4>
+            <p>以下操作<b>错误按次扣分</b>：</p>
+            <div class="kv"><span>种子选择</span><span>浸种催芽</span><span>基质配比</span><span>整枝操作</span><span>自动模式开启</span><span>云平台数据通道配置</span></div>
+          </div>
+          <div class="sub-block">
+            <h4>④ 失败惩罚机制</h4>
+            <p>环境长时间异常 → <b>触发扣分并模拟暂停</b>。</p>
+            <p style="margin-top:8px">作物死亡 → <b>后续阶段分数清零</b>。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 模块5-7 简卡 -->
+      <div class="grid g-3 reveal">
+        <div class="card">
+          <div class="ic">🧩</div>
+          <h3>无人机组装（5 分）</h3>
+          <p>按照规范完成无人机机体结构组装，为后续调试与植保作业打下基础。</p>
+        </div>
+        <div class="card">
+          <div class="ic">🛠️</div>
+          <h3>无人机调试（10 分）</h3>
+          <p>对组装完成的无人机进行参数调试，确保飞行与作业功能正常。</p>
+        </div>
+        <div class="card">
+          <div class="ic">🚁</div>
+          <h3>植保作业（10 分）</h3>
+          <p>操控无人机完成植保作业任务，体现「环境感知—执行控制—植保作业」闭环收尾。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 4. 备赛指引 ======== -->
+  <section class="block" id="prepare">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag gold">SECTION 04</span>
+        <h2 class="sec-title">备赛指引 · 学什么 &amp; 怎么练</h2>
+        <p class="sec-desc">官方备赛指引从「知识、实操、AI 融合、理论」四个维度给出学习方向。</p>
+      </div>
+
+      <div class="grid g-2 reveal">
+        <div class="card">
+          <div class="ic">📚</div>
+          <h3>1 · 需要学习的知识</h3>
+          <ul>
+            <li>智慧农业生产全流程操作</li>
+            <li>物联网设备选型、安装、配置与数据对接</li>
+            <li>现代农业基础理论知识</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="ic">🖱️</div>
+          <h3>2 · 以实操为核心</h3>
+          <ul>
+            <li>虚拟仿真平台完成种植全流程操作</li>
+            <li>传感器安装、物联网组网、数据采集与上云全链路实操</li>
+            <li><b>操作规范性与时效性并重</b></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="ic">🤖</div>
+          <h3>3 · AI + 农业融合</h3>
+          <ul>
+            <li>机器视觉：作物长势监测与病虫害识别</li>
+            <li>AI 算法辅助环境调控决策（温 / 光 / 水 / 气 / 肥）</li>
+            <li>农业生产数据的采集、分析与可视化呈现</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="ic">🧠</div>
+          <h3>4 · 理论知识储备</h3>
+          <ul>
+            <li>番茄 / 蔬菜等主要作物的生长习性、温室栽培要点</li>
+            <li>常见病虫害的识别方法与防治措施</li>
+            <li>智慧农业物联网系统架构与工作原理</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:44px">
+        <h3 style="text-align:center;font-size:22px;font-weight:900;color:var(--green-900)">温室种植全流程（实操主线）</h3>
+        <div class="pipe">
+          <div class="step"><span class="n">🏗️</span><b>温室搭建</b><small>环境准备</small></div>
+          <div class="sep">→</div>
+          <div class="step"><span class="n">🌱</span><b>种苗定植</b><small>品种选择</small></div>
+          <div class="sep">→</div>
+          <div class="step"><span class="n">💧</span><b>水肥管理</b><small>灌溉施肥</small></div>
+          <div class="sep">→</div>
+          <div class="step"><span class="n">🐛</span><b>病虫害防控</b><small>监测防治</small></div>
+          <div class="sep">→</div>
+          <div class="step"><span class="n">🧺</span><b>采收</b><small>成果收获</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 5. 竞赛组织 ======== -->
+  <section class="block" id="org">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag blue">SECTION 05</span>
+        <h2 class="sec-title">竞赛组织 · 选拔赛与总决赛</h2>
+        <p class="sec-desc">从选拔赛晋级到国际总决赛表彰，帮你理清全流程规则。</p>
+      </div>
+
+      <div class="grid g-2 reveal">
+        <div class="card">
+          <div class="ic">🏆</div>
+          <h3>选拔赛</h3>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-date">2026.10.10 · 09:00–12:00</div>
+              <div class="tl-title">赛项开展计划</div>
+              <div class="tl-desc">选拔赛时间：2026 年 10 月 10 日 9:00–12:00，<b>线上进行</b>。</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">晋级规则</div>
+              <div class="tl-title">名额分配</div>
+              <div class="tl-desc">
+                <ul>
+                  <li>有效报名单位 ≤ 10：每赛项按 <b>2 个名额</b>晋级</li>
+                  <li>有效报名单位 &gt; 10：按有效报名单位数量 <b>20%</b> 比例晋级</li>
+                  <li>同一单位同一赛项<b>仅 1 支队伍</b>晋级</li>
+                </ul>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">表彰</div>
+              <div class="tl-title">选拔赛获奖</div>
+              <div class="tl-desc">以省级/区域实际参赛队成绩为依据：一等奖 10%、二等奖 20%、三等奖 30%，其他为优秀奖。赛后颁发<b>电子版国际获奖证书</b>。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ic">🌍</div>
+          <h3>国际总决赛表彰</h3>
+          <div class="medal-grid">
+            <div class="medal">
+              <div class="mi">🥇</div>
+              <h4 class="gold-c">金牌</h4>
+              <p>金砖+国家参赛队统一排名，成绩第一获金牌</p>
+              <span class="cnt">1 支</span>
+            </div>
+            <div class="medal">
+              <div class="mi">🥈</div>
+              <h4 class="silver-c">银牌</h4>
+              <p>各参赛国成绩最好的本国队伍中，成绩前两名</p>
+              <span class="cnt">2 支</span>
+            </div>
+            <div class="medal">
+              <div class="mi">🥉</div>
+              <h4 class="bronze-c">铜牌</h4>
+              <p>各参赛国成绩最好的本国队伍中，成绩前三名</p>
+              <span class="cnt">3 支</span>
+            </div>
+            <div class="medal">
+              <div class="mi">🎖️</div>
+              <h4>优胜奖</h4>
+              <p>未获奖牌但成绩优异的线下参赛队</p>
+              <span class="cnt">上限 3 支</span>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--ink-3);margin-top:14px">💡 评奖细则：各参赛国成绩排名第一的本国参赛队有资格进入金牌排名；未获金牌的队伍按国别取成绩最好者进入银牌排名，再类推进入铜牌排名。<b>线上国际参赛队不颁发实物奖牌，只颁发相应奖牌证书。</b></p>
+        </div>
+      </div>
+
+      <div class="grid g-2 reveal" style="margin-top:20px">
+        <div class="card">
+          <div class="ic">🇨🇳</div>
+          <h3>中国赛区 · 一二三等奖</h3>
+          <p>对参加中国赛区国际总决赛的中方参赛队，依据四舍五入原则：</p>
+          <div class="chip-row">
+            <span class="chip">一等奖 10%</span>
+            <span class="chip gold">二等奖 20%</span>
+            <span class="chip blue">三等奖 30%</span>
+            <span class="chip">其他为优秀奖</span>
+          </div>
+          <p style="margin-top:12px;font-size:13.5px;color:var(--ink-2)">获奖队伍颁发相应<b>国际获奖证书</b>。</p>
+        </div>
+        <div class="card">
+          <div class="ic">🎓</div>
+          <h3>其他奖励 · 技能护照</h3>
+          <ul>
+            <li>参与执裁的裁判 → 颁发<b>国际执裁证书</b></li>
+            <li>一、二等奖队伍的指导专家 → 颁发<b>国际优秀指导专家证书</b></li>
+            <li>作出突出贡献的单位 → 颁发「<b>突出贡献奖</b>」牌匾及证书</li>
+            <li>积极组织、开展集训、无违规违纪的承办单位 → 颁发「<b>优秀组织奖</b>」证书</li>
+            <li>参赛队总成绩达到 <b>60 分（100 分制）</b>及以上的选手 → 可自愿申领 <b>A 级「技能护照」</b>证书</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 6. 平台与培训 ======== -->
+  <section class="block" id="platform">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">SECTION 06</span>
+        <h2 class="sec-title">竞赛平台与培训安排</h2>
+        <p class="sec-desc">官方平台为「博耐飞特 AI 数智农业虚拟仿真软件」，请按时间节点完成注册与培训。</p>
+      </div>
+
+      <div class="platform reveal">
+        <h3>🖥️ 博耐飞特 · AI 数智农业虚拟仿真软件</h3>
+        <p class="pl-sub">竞赛统一技术平台，用于全部操作类模块的练习与竞赛。</p>
+        <div class="plat-grid">
+          <div class="plat-item">
+            <div class="pi">🔑</div>
+            <b>账号获取</b>
+            <span>获取方式：竞赛交流答疑群；注册账号时间：<b>9 月 3–5 日</b></span>
+          </div>
+          <div class="plat-item">
+            <div class="pi">💻</div>
+            <b>设备要求</b>
+            <span>笔记本/台式电脑 · Windows · i5 十代及以上 · 16G 以上内存 · GTX 1080 以上显卡</span>
+          </div>
+          <div class="plat-item">
+            <div class="pi">🎓</div>
+            <b>培训方式</b>
+            <span>线上培训（腾讯会议），具体会议号留意竞赛交流答疑群通知</span>
+          </div>
+        </div>
+        <div class="train-cards">
+          <div class="train-card">
+            <div><div class="day">9/11</div><div class="dm">2026 · 第一场</div></div>
+            <div><b>竞赛培训 · 第一场</b><span>2026 年 9 月 11 日（14:00–18:00）</span></div>
+          </div>
+          <div class="train-card">
+            <div><div class="day">9/28</div><div class="dm">2026 · 第二场</div></div>
+            <div><b>竞赛培训 · 第二场</b><span>2026 年 9 月 28 日（14:00–18:00）</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:40px">
+        <div class="timeline" style="max-width:760px;margin:0 auto">
+          <div class="tl-item">
+            <div class="tl-date">9 月 3–5 日</div>
+            <div class="tl-title">🔑 注册竞赛平台账号</div>
+            <div class="tl-desc">通过竞赛交流答疑群获取平台，完成账号注册。</div>
+          </div>
+          <div class="tl-item blue">
+            <div class="tl-date">9 月 11 日 &amp; 9 月 28 日</div>
+            <div class="tl-title">🎓 官方线上培训（共 2 场）</div>
+            <div class="tl-desc">腾讯会议线上培训，每场 14:00–18:00，务必参加。</div>
+          </div>
+          <div class="tl-item gold">
+            <div class="tl-date">10 月 10 日 09:00–12:00</div>
+            <div class="tl-title">🏁 省/区域选拔赛（线上）</div>
+            <div class="tl-desc">按晋级规则选拔队伍进入国际总决赛。</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">待组委会通知</div>
+            <div class="tl-title">🌍 国际总决赛</div>
+            <div class="tl-desc">6 小时全流程竞赛，金砖+国家统一排名与表彰。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 原图资料 ======== -->
+  <section class="block" id="gallery">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag gold">附录</span>
+        <h2 class="sec-title">原始课件截图</h2>
+        <p class="sec-desc">以下为直播课件原始截图（共 7 张），点击可放大查看，供课堂讲解对照。</p>
+      </div>
+      <details class="gallery reveal" open>
+        <summary>📷 展开 / 收起原始截图资料 <span class="chev">▼</span></summary>
+        <div class="gallery-grid">
+          <figure><img src="assets/screenshots/截屏2026-07-28%2014.10.54.png" alt="竞赛内容与分值"><figcaption>竞赛内容与竞赛分值（3.1 / 3.2）</figcaption></figure>
+          <figure><img src="assets/screenshots/截屏2026-07-28%2014.12.10.png" alt="传感器与执行器评分要点"><figcaption>传感器与执行器、拓扑图连线、设备安装评分要点（3.3）</figcaption></figure>
+          <figure><img src="assets/screenshots/截屏2026-07-28%2014.17.09.png" alt="番茄种植模拟评分要点"><figcaption>番茄种植模拟评分要点（3.3 续）</figcaption></figure>
+          <figure><img src="assets/screenshots/截屏2026-07-28%2014.24.06.png" alt="选拔赛组织"><figcaption>竞赛组织 · 选拔赛安排与晋级规则</figcaption></figure>
+          <figure><img src="assets/screenshots/截屏2026-07-28%2014.28.40.png" alt="国际总决赛表彰"><figcaption>竞赛组织 · 国际总决赛表彰与技能护照</figcaption></figure>
+          <figure><img src="assets/screenshots/截屏2026-07-28%2014.31.24.png" alt="备赛指引"><figcaption>备赛指引（1–4：知识 / 实操 / AI 融合 / 理论）</figcaption></figure>
+          <figure><img src="assets/screenshots/截屏2026-07-28%2014.32.54.png" alt="平台与培训"><figcaption>备赛指引（5–6：竞赛平台与培训安排）</figcaption></figure>
+        </div>
+      </details>
+    </div>
+  </section>
+</main>
+
+<!-- ======== Footer ======== -->
+<footer>
+  <div class="f-inner">
+    <div class="f-logo">🌱 AI 数智农业虚拟仿真 · 教学要点速览</div>
+    <p>资料来源：金砖职业技能大赛 ·「AI 数智农业虚拟仿真」竞赛内容与评分标准 / 竞赛组织 / 备赛指引 直播课件（2026-07-28）。</p>
+    <div class="f-note">⚠️ 免责声明：本页面由课件截图要点整理而成，仅供教学参考。OCR 识别可能与原文存在细微出入，涉及分数、日期、规则等内容请以组委会官方通知及官方课件为准。</div>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div id="lightbox"><img id="lbImg" src="" alt=""><div class="cap" id="lbCap"></div></div>
+
+<button id="toTop" title="回到顶部">↑</button>
+
+<script>
+  // Top nav shadow + burger
+  const nav=document.getElementById('topNav'),burger=document.getElementById('burger'),links=document.getElementById('navLinks');
+  addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>10);document.getElementById('toTop').classList.toggle('show',scrollY>500)},{passive:true});
+  burger.addEventListener('click',()=>links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+  document.getElementById('toTop').addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+
+  // Reveal on scroll
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Score bars animate when visible
+  const bio=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.bar').forEach(b=>{b.style.width=(b.dataset.w/100*100)+'%'});bio.unobserve(e.target)}
+  }),{threshold:.25});
+  const sc=document.querySelector('.score-card');if(sc)bio.observe(sc);
+
+  // Lightbox
+  const lb=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg'),lbCap=document.getElementById('lbCap');
+  document.querySelectorAll('.gallery-grid figure').forEach(f=>{
+    f.addEventListener('click',()=>{const im=f.querySelector('img');lbImg.src=im.src;lbCap.textContent=im.alt;lb.classList.add('show')});
+  });
+  lb.addEventListener('click',()=>lb.classList.remove('show'));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('show')});
+</script>
+</body>
+</html>
